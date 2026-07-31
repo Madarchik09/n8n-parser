@@ -26,9 +26,12 @@ def parse_vk(domain: str, token: str):
 @app.post("/parse/web")
 def parse_web(url: str):
     try:
-        response = httpx.get(url, timeout=10.0)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        response = httpx.get(url, headers=headers, follow_redirects=True, timeout=10.0)
         soup = BeautifulSoup(response.text, "html.parser")
-        title = soup.title.string if soup.title else ""
+        title = soup.title.string.strip() if soup.title and soup.title.string else "Без заголовка"
         return {"success": True, "title": title, "content_length": len(response.text)}
     except Exception as e:
         return {"success": False, "error": str(e)}
