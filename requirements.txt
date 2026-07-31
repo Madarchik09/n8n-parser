@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+vk_api
+telethon
+httpx
+beautifulsoup4
+supabase
